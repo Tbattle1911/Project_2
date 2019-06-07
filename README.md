@@ -1,6 +1,6 @@
-# Project 2 - TDB
+# Project 2 - Bootcamp Shortcuts
 
-
+Bootcamp Shortcuts by Coding Trailblazers
 
 ## Getting Started
 Run npm install.
