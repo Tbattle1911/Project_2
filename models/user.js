@@ -1,11 +1,8 @@
-module.exports = function(sequelize, Datatypes ) {
+module.exports = function (sequelize, DataTypes) {
+  // Creates a "User" model that matches up with DB
+  const User = sequelize.define("User", {
+    name: DataTypes.STRING
+  });
 
-    // Creates a "User" model that matches up with DB
-    const User = sequelize.define("user", {
-      name: Sequelize.STRING
-     
-    });
-    
-    return User;
-    
-    }
+  return User;
+}

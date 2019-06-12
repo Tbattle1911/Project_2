@@ -1,24 +1,43 @@
 var db = require("../models");
 
 module.exports = function(app) {
-  // Get all examples
-  app.get("/api/examples", function(req, res) {
-    db.Example.findAll({}).then(function(dbExamples) {
-      res.json(dbExamples);
+  app.get("/api/shortcuts", function(req, res) {
+    db.Shortcut.findAll({}).then(function(allShortcuts) {
+      res.json(allShortcuts);
     });
   });
 
-  // Create a new example
-  app.post("/api/examples", function(req, res) {
-    db.Example.create(req.body).then(function(dbExample) {
-      res.json(dbExample);
+  // Create a new Shortcut - Not needed unless we have time to expand project
+  app.post("/api/shortcut", function(req, res) {
+    db.Shortcut.create(req.body).then(function(dbShortcut) {
+      res.json(dbShortcut);
     });
   });
 
-  // Delete an example by id
-  app.delete("/api/examples/:id", function(req, res) {
-    db.Example.destroy({ where: { id: req.params.id } }).then(function(dbExample) {
-      res.json(dbExample);
+  // Create a new User
+  app.post("/api/user", function(req, res) {
+    db.User.create(req.body).then(function(dbUser) {
+      res.json(dbUser);
+    });
+  });
+
+  // Create a new Project
+  app.post("/api/project", function(req, res) {
+    db.Project.create(req.body).then(function(dbProject) {
+      res.json(dbProject);
+    });
+  });
+
+  // PUT route for updating project showables
+  app.put("/api/project", function(req, res) {
+    db.Project.update(
+      req.body,
+      {
+        where: {
+          project_id: req.body.project_id
+        }
+      }).then(function(dbPost) {
+      res.json(dbPost);
     });
   });
 };

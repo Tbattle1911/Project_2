@@ -1,27 +1,43 @@
 var db = require("../models");
 
 module.exports = function(app) {
-  // Load index page
+  // Load login page
   app.get("/", function(req, res) {
-    db.Example.findAll({}).then(function(dbExamples) {
-      res.render("index", {
-        msg: "Welcome!",
-        examples: dbExamples
-      });
+    db.Shortcut.findAll({}).then(function(dbShortcuts) {
+      res.json(dbShortcuts);
+      // res.render("index", {
+      //   msg: "Welcome!",
+      //   examples: dbShortcuts
+      // });
     });
   });
 
-  // Load example page and pass in an example by id
-  app.get("/example/:id", function(req, res) {
-    db.Example.findOne({ where: { id: req.params.id } }).then(function(dbExample) {
-      res.render("example", {
-        example: dbExample
-      });
+  // Load project selection page
+  app.get("/user/:id", function(req, res) {
+    db.Project.findAll({ where: { UserId: req.params.id } }).then(function(dbUserProjects) {
+      res.json(dbUserProjects);
+      // res.render("projects", {
+      //   projects: dbUserProjects
+      // });
     });
   });
 
-  // Render 404 page for any unmatched routes
-  app.get("*", function(req, res) {
-    res.render("404");
+  // Render active project page
+  app.get("/project/:id", function(req, res) {
+    db.Project.findOne({
+      where: { id: req.params.id }
+    }).then(function(dbPrj) {
+      console.log(dbPrj.showMask);
+      //Use api route to get json of all our shortcuts.
+      db.Shortcut.findAll({}).then(function(data) {
+        let shortcutsToShow = [];
+        for (let i = 0; i < data.length; i++) {
+          if((dbPrj.showMask >> i) & 0x1) { //Shift showMask to associated bit.  Then evaluate if it is 1 ~ true ~ show
+            shortcutsToShow.push(data[i]);
+          }
+        }
+        res.json(shortcutsToShow);
+      });
+    });
   });
 };

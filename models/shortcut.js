@@ -1,13 +1,11 @@
-module.exports = function(sequelize, Datatypes ) {
+module.exports = function (sequelize, DataTypes) {
+  // Creates a "Shortcut" model that matches up with DB
+  const Shortcut = sequelize.define("Shortcut", {
+    title: DataTypes.STRING,
+    short_description: DataTypes.TEXT,
+    getting_started: DataTypes.TEXT,
+    links: DataTypes.TEXT
+  });
 
-// Creates a "Shortcut" model that matches up with DB
-const Shortcut = sequelize.define("shortcut", {
-  title: Sequelize.STRING,
-  short_description: Sequelize.TEXT,
-  getting_started: Sequelize.TEXT,
-  links: Sequelize.TEXT
-});
-
-return Shortcut;
-
+  return Shortcut;
 }
