@@ -21,6 +21,13 @@ module.exports = function(app) {
     });
   });
 
+  //Get a project
+  app.get("/api/project/:id", function(req, res) {
+    db.Shortcut.findOne({ where: { id: req.params.id }}).then(function(project) {
+      res.json(project);
+    });
+  });
+
   // Create a new Project
   app.post("/api/project", function(req, res) {
     db.Project.create(req.body).then(function(dbProject) {
@@ -34,7 +41,7 @@ module.exports = function(app) {
       req.body,
       {
         where: {
-          project_id: req.body.project_id
+          id: req.body.id
         }
       }).then(function(dbPost) {
       res.json(dbPost);
