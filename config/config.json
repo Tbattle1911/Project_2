@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": null,
-    "database": "exampledb",
-    "host": "localhost",
+    "password": "docker",
+    "database": "shortcuts_db",
+    "host": "192.168.99.103",
     "dialect": "mysql"
   },
   "test": {

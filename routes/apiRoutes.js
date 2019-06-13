@@ -23,7 +23,9 @@ module.exports = function(app) {
 
   //Get a project
   app.get("/api/project/:id", function(req, res) {
-    db.Shortcut.findOne({ where: { id: req.params.id }}).then(function(project) {
+    db.Shortcut.findOne({ where: { id: req.params.id } }).then(function(
+      project
+    ) {
       res.json(project);
     });
   });
@@ -37,13 +39,11 @@ module.exports = function(app) {
 
   // PUT route for updating project showables
   app.put("/api/project", function(req, res) {
-    db.Project.update(
-      req.body,
-      {
-        where: {
-          id: req.body.id
-        }
-      }).then(function(dbPost) {
+    db.Project.update(req.body, {
+      where: {
+        id: req.body.id
+      }
+    }).then(function(dbPost) {
       res.json(dbPost);
     });
   });

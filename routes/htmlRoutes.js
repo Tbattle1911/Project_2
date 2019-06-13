@@ -14,7 +14,9 @@ module.exports = function(app) {
 
   // Load project selection page
   app.get("/user/:id", function(req, res) {
-    db.Project.findAll({ where: { UserId: req.params.id } }).then(function(dbUserProjects) {
+    db.Project.findAll({ where: { UserId: req.params.id } }).then(function(
+      dbUserProjects
+    ) {
       res.json(dbUserProjects);
       // res.render("projects", {
       //   projects: dbUserProjects
@@ -32,7 +34,8 @@ module.exports = function(app) {
       db.Shortcut.findAll({}).then(function(data) {
         let shortcutsToShow = [];
         for (let i = 0; i < data.length; i++) {
-          if((dbPrj.showMask >> i) & 0x1) { //Shift showMask to associated bit.  Then evaluate if it is 1 ~ true ~ show
+          if ((dbPrj.showMask >> i) & 0x1) {
+            //Shift showMask to associated bit.  Then evaluate if it is 1 ~ true ~ show
             shortcutsToShow.push(data[i]);
           }
         }

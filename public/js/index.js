@@ -98,42 +98,50 @@ var handleDeleteBtnClick = function() {
 $submitBtn.on("click", handleFormSubmit);
 $exampleList.on("click", ".delete", handleDeleteBtnClick);
 
-
 /// Jacobs Area
 //Create a new User
-$('#createUser').on("click", ()=>{
-  $.post('/api/user', {
-    name:"Bob" //TODO - pull in the User entry and everything else needed.
-  }, (res)=>{
-    //TODO - Navigate to the Projects Page.
-  });
+$("#createUser").on("click", () => {
+  $.post(
+    "/api/user",
+    {
+      name: "Bob" //TODO - pull in the User entry and everything else needed.
+    },
+    () => {
+      //TODO - Navigate to the Projects Page.
+    }
+  );
 });
 
 //Create a new Project
-$('#createProject').on("click", ()=>{
-  $.post('/api/project', {
-    //TODO - pull in the project entry and everything else needed.
-    title:"ProjectZ",
-    showMask: 0xFFFF,
-    UserId: 1
-  }, (res)=>{
-    //TODO - Navigate to active Project Page.
-  });
+$("#createProject").on("click", () => {
+  $.post(
+    "/api/project",
+    {
+      //TODO - pull in the project entry and everything else needed.
+      title: "ProjectZ",
+      showMask: 0xffff,
+      UserId: 1
+    },
+    () => {
+      //TODO - Navigate to active Project Page.
+    }
+  );
 });
 
 //Respond to a user clicking away a Shortcut
-$('.xButton').on("click", () => {
+$(".xButton").on("click", () => {
   //Get the current Project Settings.
-  $.get(`api/project/${$(this).data("projectid")}`).then((prjdata)=> {
+  $.get(`api/project/${$(this).data("projectid")}`).then(prjdata => {
     //Mask away this shortcut.
     //Take the Id, Subtract by 1, Shift it to the appropriate Bit.  Invert it so its the only zero then clamp it to our max supported.
-    const maskAway = ~(1 << Number($(this).data("shortcutid")-1)) & prjdata.showMask;
+    const maskAway =
+      ~(1 << Number($(this).data("shortcutid") - 1)) & prjdata.showMask;
     console.log("maskAway: " + maskAway);
 
     //Put updated key to server.
     $.ajax({
-      url: '/api/project',
-      method: 'PUT',
+      url: "/api/project",
+      method: "PUT",
       data: {
         id: prjdata.id,
         showMask: maskAway,
