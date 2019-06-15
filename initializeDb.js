@@ -59,7 +59,8 @@ External: <script src="https://code.jquery.com/jquery.js"></script>`,
   });
 
   db.User.create({
-    name: "Bob"
+    name: "Bob1",
+    token: "bad"
   }).then(function(res) {
     //We can create user Projects now.
     db.Project.create({
@@ -75,7 +76,8 @@ External: <script src="https://code.jquery.com/jquery.js"></script>`,
   });
 
   db.User.create({
-    name: "Jacob"
+    name: "Jacob",
+    token: "bad"
   }).then(function(res) {
     db.Project.create({
       title: "Project2",

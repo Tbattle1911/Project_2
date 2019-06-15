@@ -1,4 +1,6 @@
-var db = require("../models");
+const db = require("../models");
+const verify = require("../scripts/validateAuthentication");
+const create = require("../scripts/createToken");
 
 module.exports = function(app) {
   app.get("/api/shortcuts", function(req, res) {
@@ -16,8 +18,19 @@ module.exports = function(app) {
 
   // Create a new User
   app.post("/api/user", function(req, res) {
-    db.User.create(req.body).then(function(dbUser) {
+    const newUser = {
+      name: req.body.name,
+      token: create(req.body.name, req.body.password)
+    };
+
+    db.User.create(newUser).then(function(dbUser) {
       res.json(dbUser);
+    });
+  });
+
+  app.post("/api/login", function(req, res) {
+    db.User.findOne({ where: { name: req.body.name } }).then(function(dbUser) {
+      res.json(verify(req.body.name, req.body.password, dbUser.token));
     });
   });
 
