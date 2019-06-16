@@ -16,7 +16,7 @@ External: <script src="https://code.jquery.com/jquery.js"></script>`,
     title: "Sequelize",
     shortDescription:
       "Sequelize is a promise-based Node.js ORM for Postgres, MyMariaDB, SQLite and Microsoft SQL Server. It features solid transaction support, relations, eager and lazy loading, read replication and more.",
-    gettingStarted: `npm install sequelize --save.`,
+    gettingStarted: "npm install sequelize --save.",
     links: "http://docs.sequelizejs.com/"
   });
   db.Shortcut.create({
@@ -35,7 +35,7 @@ External: <script src="https://code.jquery.com/jquery.js"></script>`,
     title: "Express",
     shortDescription:
       "Express provides a minimal interface to build our applications. It provides us the tools that are required to build our app. It is flexible as there are numerous modules available on npm, which can be directly plugged into Express.",
-    gettingStarted: `$ npm install express --save.`,
+    gettingStarted: "$ npm install express --save.",
     links: "https://expressjs.com/"
   });
   db.Shortcut.create({
