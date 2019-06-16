@@ -1,15 +1,11 @@
 var db = require("../models");
+const path = require("path");
+
 
 module.exports = function(app) {
   // Load login page
   app.get("/", function(req, res) {
-    db.Shortcut.findAll({}).then(function(dbShortcuts) {
-      res.json(dbShortcuts);
-      // res.render("index", {
-      //   msg: "Welcome!",
-      //   examples: dbShortcuts
-      // });
-    });
+  res.sendFile(path.join(__dirname, "../views/index.html"))
   });
 
   // Load project selection page

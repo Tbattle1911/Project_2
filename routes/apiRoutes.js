@@ -18,6 +18,7 @@ module.exports = function(app) {
 
   // Create a new User
   app.post("/api/user", function(req, res) {
+    console.log(req.body.name + " " + req.body.password);
     const newUser = {
       name: req.body.name,
       token: create(req.body.name, req.body.password)

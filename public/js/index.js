@@ -100,11 +100,16 @@ $exampleList.on("click", ".delete", handleDeleteBtnClick);
 
 /// Jacobs Area
 //Create a new User
-$("#createUser").on("click", () => {
+$("#createAccount").on("click", () => {
+  console.log($('#logIn')) 
+  console.log($('#password'))
   $.post(
     "/api/user",
     {
-      name: "Bob" //TODO - pull in the User entry and everything else needed.
+      name: $('#logIn').text().trim(),
+      password: $('#password').text().trim()
+
+       //TODO - pull in the User entry and everything else needed.
     },
     () => {
       //TODO - Navigate to the Projects Page.
