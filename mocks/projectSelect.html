@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+      <link rel="stylesheet" href="../styles/shortcut.css">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+<body>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="../js/shortcuts.js"></script>
+</body>
+<nav>
+        <div class="nav-wrapper red">
+            <a href="" class="brand-logo">BootCamp Shortcuts</a>
+            <div class="chip">Sample User</div>
+        </div>
+    </nav>
+    <br>
+    
+    <section class="container">
+    <div class="row">
+      <div class="col s12">
+            <a href="#" data-projectId="{{this.id}}" class="loadProject"><i class="material-icons">code</i>Project One</div>
+            <a href="#" data-projectId="{{this.id}}" class="loadProject"><i class="material-icons">code</i>Project Two</div>
+            <a href="#" data-projectId="{{this.id}}" class="loadProject"><i class="material-icons">code</i>Project Three</div>
+            <a href="#" data-projectId="{{this.id}}" class="loadProject"><i class="material-icons">code</i>Project Four</div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="projectName" type="text" class="validate">
+            <label for="projectName">New Project</label>
+          </div>
+        </div>
+        <button id="createProject" class="btn btn-large red white-text right-align"> Create Project </button>
+      </form>
+    </div>
+    </section>
+</html>
+
+
+
+    

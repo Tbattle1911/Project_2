@@ -1,22 +1,22 @@
 var db = require("../models");
 const path = require("path");
 
-
 module.exports = function(app) {
   // Load login page
   app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "../views/index.html"))
+    res.sendFile(path.join(__dirname, "../views/index.html"));
   });
 
-  // Load project selection page
+  // Render project selection page
   app.get("/user/:id", function(req, res) {
     db.Project.findAll({ where: { UserId: req.params.id } }).then(function(
       dbUserProjects
     ) {
-      res.json(dbUserProjects);
-      // res.render("projects", {
-      //   projects: dbUserProjects
-      // });
+      res.render("projectSelect", {
+        //TODO - get the user name rather than the id.
+        userName: req.params.id,
+        projects: dbUserProjects
+      });
     });
   });
 
@@ -35,7 +35,12 @@ module.exports = function(app) {
             shortcutsToShow.push(data[i]);
           }
         }
-        res.json(shortcutsToShow);
+        res.render("projectDisplay", {
+          //TODO - get the user name rather than the id.
+          userName: req.params.id,
+          projectName: req.params.id,
+          projects: shortcutsToShow
+        });
       });
     });
   });

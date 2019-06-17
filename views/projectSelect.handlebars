@@ -1,0 +1,29 @@
+<nav>
+    <div class="nav-wrapper red">
+        <a href="" class="brand-logo">BootCamp Shortcuts</a>
+        <div class="chip">{{{userName}}}</div>
+    </div>
+</nav>
+<br>
+
+<section class="container">
+<div class="row">
+  <div class="col s12">
+    {{#each projects}}
+        <a href="#" data-projectId="{{this.id}}" class="loadProject"><i class="material-icons">code</i>{{this.name}}</div>
+    {{/each}}
+  </div>
+</div>
+
+<div class="row">
+  <form class="col s12">
+    <div class="row">
+      <div class="input-field col s6">
+        <input id="projectName" type="text" class="validate">
+        <label for="projectName">New Project</label>
+      </div>
+    </div>
+    <button id="createProject" class="btn btn-large red white-text right-align"> Create Project </button>
+  </form>
+</div>
+</section>

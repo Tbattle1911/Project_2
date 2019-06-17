@@ -1,6 +1,7 @@
 const db = require("../models");
-const verify = require("../scripts/validateAuthentication");
 const create = require("../scripts/createToken");
+const controller = require("../controllers/shortcutsController");
+const verify = require("../scripts/validateAuthentication");
 
 module.exports = function(app) {
   app.get("/api/shortcuts", function(req, res) {
@@ -18,37 +19,95 @@ module.exports = function(app) {
 
   // Create a new User
   app.post("/api/user", function(req, res) {
-    console.log(req.body.name + " " + req.body.password);
-    const newUser = {
-      name: req.body.name,
-      token: create(req.body.name, req.body.password)
-    };
-
-    db.User.create(newUser).then(function(dbUser) {
-      res.json(dbUser);
-    });
+    controller
+      .createAccount(req.body.name, req.body.password)
+      .then(dbResponse => {
+        res.json({
+          success: true,
+          id: dbResponse.dataValues.id,
+          token: create.createSessionToken(req.body.name)
+        });
+      })
+      .catch(err => {
+        res.json({
+          success: false,
+          message: err
+        });
+      });
   });
 
   app.post("/api/login", function(req, res) {
-    db.User.findOne({ where: { name: req.body.name } }).then(function(dbUser) {
-      res.json(verify(req.body.name, req.body.password, dbUser.token));
-    });
+    controller
+      .getAccount(req.body.name, req.body.password)
+      .then(dbUser => {
+        const success = verify.validateUser(
+          req.body.name,
+          req.body.password,
+          dbUser.token
+        );
+
+        if (success) {
+          res.json({
+            success,
+            id: dbUser.id,
+            token: create.createSessionToken(req.body.name)
+          });
+        } else {
+          res.json({
+            success: false,
+            message: "Validation failed.  Please try again."
+          });
+        }
+      })
+      .catch(err => {
+        const response = {
+          success: false,
+          message: err
+        };
+        res.json(response);
+      });
   });
 
   //Get a project
   app.get("/api/project/:id", function(req, res) {
-    db.Shortcut.findOne({ where: { id: req.params.id } }).then(function(
-      project
-    ) {
-      res.json(project);
-    });
+    if (verify.validateSession(req.body.token)) {
+      db.Shortcut.findOne({ where: { id: req.params.id } }).then(function(
+        project
+      ) {
+        res.json({
+          success: true,
+          projectId: project.id
+        });
+      });
+    } else {
+      res.json({
+        success: false,
+        message: "Your session has expired.  Please login again."
+      });
+    }
   });
 
   // Create a new Project
   app.post("/api/project", function(req, res) {
-    db.Project.create(req.body).then(function(dbProject) {
-      res.json(dbProject);
-    });
+    if (verify.validateSession(req.body.token)) {
+      const newProject = {
+        title: req.body.title,
+        token: 0xffff,
+        UserId: verify.getUserFromToken(req.body.token)
+      };
+
+      db.Project.create(newProject).then(function(dbProject) {
+        res.json({
+          success: true,
+          id: dbProject.id
+        });
+      });
+    } else {
+      res.json({
+        success: false,
+        message: "Your session has expired.  Please login again."
+      });
+    }
   });
 
   // PUT route for updating project showables

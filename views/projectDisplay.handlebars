@@ -1,0 +1,30 @@
+<nav>
+    <div class="nav-wrapper red">
+        <a href="" class="brand-logo">BootCamp Shortcuts</a>
+        <div class="chip">{{{userName}}}</div>
+        <div class="chip right">{{{projectName}}}</div>
+    </div>
+</nav>
+<br>
+
+<section class="container">
+<div class="row">
+  <div class="col s12">
+    <ul class="collapsible"></ul>
+    {{#each projects}}
+        <li>
+        <div class="collapsible-header"><i class="material-icons">code</i>{{this.name}}<i data-projectId="{{this.id}}" class="right close material-icons">close</i></div>
+        <div class="collapsible-body">
+            <span>{{this.shortDescription}}</span>
+            <br>
+            <span>{{this.gettingStarted}}</span>
+            <br>
+            <span>{{this.links}}</span>
+        </div>
+        </li>
+    {{/each}}
+    </ul>
+  </div>
+</div>
+
+</section>
