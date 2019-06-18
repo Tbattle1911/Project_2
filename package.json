@@ -4,6 +4,7 @@
   "description": "Project 2 Starter",
   "main": "server.js",
   "scripts": {
+    "prepare": "node initializeDb.js",
     "start": "node server.js",
     "lint": "eslint **/*.js --quiet",
     "fix": "eslint --fix .",
