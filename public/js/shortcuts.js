@@ -88,13 +88,14 @@ $(".loadProject").on("click", event => {
 //Respond to a user clicking away a Shortcut
 $(".xButton").on("click", event => {
   // console.log($(event.target).attr("data-shortcutId"));
+  console.log($("#projectInfo").attr("data-titleId"));
   //Get the current Project Settings.
   $.ajax({
     method: "PUT",
     url: "/api/project",
     data: {
       index: Number($(event.target).attr("data-shortcutId") - 1),
-      projectId: 1
+      projectId: $("#projectInfo").attr("data-titleId")
     }
   }).then(function() {
     $(event.target)

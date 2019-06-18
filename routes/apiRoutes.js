@@ -123,6 +123,8 @@ module.exports = function(app) {
 
   // PUT route for updating project showables
   app.put("/api/project", function(req, res) {
+    console.log(req.body);
+    console.log("prjId: "+req.body.projectId);
     //Get based on id.
     db.Project.findOne({
       where: { id: req.body.projectId }
@@ -139,6 +141,8 @@ module.exports = function(app) {
         showMask: maskAway
       };
       console.log(copy);
+
+      console.log("prjId: " + req.body.projectId);
 
       db.Project.update(copy, {
         where: {

@@ -12,5 +12,8 @@ module.exports = {
   },
   getAccount: name => {
     return db.User.findOne({ where: { name: name } });
+  },
+  getAccountById: id => {
+    return db.User.findOne({ where: { id } });
   }
 };

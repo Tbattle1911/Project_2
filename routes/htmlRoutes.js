@@ -1,5 +1,6 @@
 var db = require("../models");
 const path = require("path");
+const controller = require("../controllers/shortcutsController");
 
 module.exports = function(app) {
   // Load login page
@@ -12,10 +13,13 @@ module.exports = function(app) {
     db.Project.findAll({ where: { UserId: req.params.id } }).then(function(
       dbUserProjects
     ) {
-      res.render("projectSelect", {
-        //TODO - get the user name rather than the id.
-        userName: req.params.id,
-        projects: dbUserProjects
+      controller.getAccountById(req.params.id).then(userResponse => {
+        console.log("user: " + userResponse.name + " id: " + req.params.id);
+        res.render("projectSelect", {
+          userName: userResponse.name,
+          userId: req.params.id,
+          projects: dbUserProjects
+        });
       });
     });
   });
@@ -35,11 +39,25 @@ module.exports = function(app) {
             shortcutsToShow.push(data[i]);
           }
         }
-        res.render("projectDisplay", {
-          //TODO - get the user name rather than the id.
-          userName: "bob",
-          projectName: req.params.projectId,
-          projects: shortcutsToShow
+
+        controller.getAccountById(dbPrj.UserId).then(userInfo => {
+          console.log(
+            "id: " +
+              dbPrj.UserId +
+              " name: " +
+              userInfo.name +
+              " prjName: " +
+              dbPrj.title +
+              " prjId: " +
+              req.params.projectId
+          );
+          res.render("projectDisplay", {
+            userId: userInfo.id,
+            userName: userInfo.name,
+            projectName: dbPrj.title,
+            titleId: dbPrj.id,
+            shortcuts: shortcutsToShow
+          });
         });
       });
     });
