@@ -4,3 +4,7 @@ header{
   background-position: center,
   min-height: 900px
 }
+
+.collapsible-header {
+  display: block;
+}
