@@ -78,23 +78,23 @@ module.exports = function(app) {
   });
 
   //Get a project - TODO - Evaluate if this is used.
-  app.get("/api/project/:id", function(req, res) {
-    if (verify.validateSession(req.body.token)) {
-      db.Shortcut.findOne({ where: { id: req.params.id } }).then(function(
-        project
-      ) {
-        res.json({
-          success: true,
-          projectId: project.id
-        });
-      });
-    } else {
-      res.json({
-        success: false,
-        message: "Your session has expired.  Please login again."
-      });
-    }
-  });
+  // app.get("/api/project/:id", function(req, res) {
+  //   if (verify.validateSession(req.body.token)) {
+  //     db.Shortcut.findOne({ where: { id: req.params.id } }).then(function(
+  //       project
+  //     ) {
+  //       res.json({
+  //         success: true,
+  //         projectId: project.id
+  //       });
+  //     });
+  //   } else {
+  //     res.json({
+  //       success: false,
+  //       message: "Your session has expired.  Please login again."
+  //     });
+  //   }
+  // });
 
   // Create a new Project
   app.post("/api/project", function(req, res) {
@@ -123,12 +123,31 @@ module.exports = function(app) {
 
   // PUT route for updating project showables
   app.put("/api/project", function(req, res) {
-    db.Project.update(req.body, {
-      where: {
-        id: req.body.id
-      }
-    }).then(function(dbPost) {
-      res.json(dbPost);
+    //Get based on id.
+    db.Project.findOne({
+      where: { id: req.body.projectId }
+    }).then(function(dbPrj) {
+      console.log("Before: " + dbPrj.showMask);
+      const mask = ~(1 << req.body.index);
+      console.log("Mask: " + mask);
+      //Update Maskaway
+      const maskAway = mask & dbPrj.showMask;
+      console.log("Mask: " + maskAway);
+
+      const copy = {
+        title: dbPrj.title,
+        showMask: maskAway
+      };
+      console.log(copy);
+
+      db.Project.update(copy, {
+        where: {
+          id: req.body.projectId
+        }
+      }).then(function(dbPost) {
+        console.log("final db " + dbPost);
+        res.json(dbPost);
+      });
     });
   });
 };

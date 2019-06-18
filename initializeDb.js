@@ -57,32 +57,4 @@ External: <script src="https://code.jquery.com/jquery.js"></script>`,
     npm run scriptName.`,
     links: "https://docs.npmjs.com/"
   });
-
-  db.User.create({
-    name: "Bob1",
-    token: "bad"
-  }).then(function(res) {
-    //We can create user Projects now.
-    db.Project.create({
-      title: "Project1",
-      showMask: 0xffff,
-      UserId: res.id
-    });
-    db.Project.create({
-      title: "ProjectOmega",
-      showMask: 0xffff,
-      UserId: res.id
-    });
-  });
-
-  db.User.create({
-    name: "Jacob",
-    token: "bad"
-  }).then(function(res) {
-    db.Project.create({
-      title: "Project2",
-      showMask: 0xffff,
-      UserId: res.id
-    });
-  });
 });

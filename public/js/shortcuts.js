@@ -86,29 +86,45 @@ $(".loadProject").on("click", event => {
 });
 
 //Respond to a user clicking away a Shortcut
-$(".xButton").on("click", () => {
+$(".xButton").on("click", event => {
+  // console.log($(event.target).attr("data-shortcutId"));
   //Get the current Project Settings.
-  $.get(`api/project/${$(this).data("projectId")}`).then(prjdata => {
-    //Mask away this shortcut.
-    //Take the Id, Subtract by 1, Shift it to the appropriate Bit.  Invert it so its the only zero then clamp it to our max supported.
-    const maskAway =
-      ~(1 << Number($(this).data("shortcutid") - 1)) & prjdata.showMask;
-    console.log("maskAway: " + maskAway);
-
-    //Put updated key to server.
-    $.ajax({
-      url: "/api/project",
-      method: "PUT",
-      data: {
-        id: prjdata.id,
-        showMask: maskAway,
-        UserId: prjdata.UserId
-      }, // data as js object
-      success: () => {
-        $(this).hide();
-      }
-    });
+  $.ajax({
+    method: "PUT",
+    url: "/api/project",
+    data: {
+      index: Number($(event.target).attr("data-shortcutId") - 1),
+      projectId: 1
+    }
+  }).then(function() {
+    $(event.target)
+      .closest(".shortcutItem")
+      .hide();
   });
+
+  // $.post("/api/project/" + $(event.target).attr("data-shortcutId")).then(
+  //   prjdata => {
+  //     //Mask away this shortcut.
+  //     //Take the Id, Subtract by 1, Shift it to the appropriate Bit.  Invert it so its the only zero then clamp it to our max supported.
+  //     const maskAway =
+  //       ~(1 << Number($(this).data("shortcutid") - 1)) & prjdata.showMask;
+  //     console.log("maskAway: " + maskAway);
+
+  //     //Put updated key to server.
+  //     $.ajax({
+  //       url: "/api/project",
+  //       method: "PUT",
+  //       data: {
+  //         id: prjdata.id,
+  //         showMask: maskAway,
+  //         UserId: prjdata.UserId
+  //       }, // data as js object
+  //       success: () => {
+  //         $(this).hide();
+  //       }
+  //     });
+  //   }
+  // );
 });
 
 $(document).ready(() => {

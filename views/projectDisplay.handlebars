@@ -12,11 +12,11 @@
   <div class="col s12">
     <ul class="collapsible popout">
       {{#each projects}}
-        <li>
+        <li class="shortcutItem">
           <div class="collapsible-header">
             <i class="material-icons">code</i>
             {{this.title}}
-            <i data-projectId="{{this.id}}" class="xButton close material-icons">close</i>
+            <i data-shortcutId="{{this.id}}" class="xButton close material-icons">close</i>
           </div>
           <div class="collapsible-body">
             <span>{{this.shortDescription}}</span>
