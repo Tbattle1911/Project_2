@@ -25,7 +25,7 @@ module.exports = function(app) {
         res.json({
           success: true,
           id: dbResponse.dataValues.id,
-          token: create.createSessionToken(req.body.name)
+          token: create.createSessionToken(dbResponse.dataValues.id)
         });
       })
       .catch(err => {
@@ -36,30 +36,39 @@ module.exports = function(app) {
       });
   });
 
+  // Log into a user account.
   app.post("/api/login", function(req, res) {
     controller
       .getAccount(req.body.name, req.body.password)
       .then(dbUser => {
-        const success = verify.validateUser(
-          req.body.name,
-          req.body.password,
-          dbUser.token
-        );
+        if (dbUser) {
+          const success = verify.validateUser(
+            req.body.name,
+            req.body.password,
+            dbUser.token
+          );
 
-        if (success) {
-          res.json({
-            success,
-            id: dbUser.id,
-            token: create.createSessionToken(req.body.name)
-          });
+          if (success) {
+            res.json({
+              success,
+              id: dbUser.id,
+              token: create.createSessionToken(dbUser.id)
+            });
+          } else {
+            res.json({
+              success: false,
+              message: "Validation failed.  Please try again."
+            });
+          }
         } else {
           res.json({
             success: false,
-            message: "Validation failed.  Please try again."
+            message: "User not found.  Do you need to sign up?"
           });
         }
       })
       .catch(err => {
+        console.log(err);
         const response = {
           success: false,
           message: err
@@ -68,7 +77,7 @@ module.exports = function(app) {
       });
   });
 
-  //Get a project
+  //Get a project - TODO - Evaluate if this is used.
   app.get("/api/project/:id", function(req, res) {
     if (verify.validateSession(req.body.token)) {
       db.Shortcut.findOne({ where: { id: req.params.id } }).then(function(
@@ -90,16 +99,18 @@ module.exports = function(app) {
   // Create a new Project
   app.post("/api/project", function(req, res) {
     if (verify.validateSession(req.body.token)) {
+      console.log("Token Validated");
       const newProject = {
         title: req.body.title,
-        token: 0xffff,
-        UserId: verify.getUserFromToken(req.body.token)
+        showMask: 0xffff,
+        UserId: verify.getUserIdFromToken(req.body.token)
       };
 
-      db.Project.create(newProject).then(function(dbProject) {
+      db.Project.create(newProject).then(dbProject => {
+        console.log(dbProject);
         res.json({
           success: true,
-          id: dbProject.id
+          projectId: dbProject.id
         });
       });
     } else {

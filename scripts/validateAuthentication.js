@@ -10,7 +10,9 @@ module.exports = {
   validateSession: function(sessionToken) {
     return jwt.verify(sessionToken, process.env.JWT_KEY);
   },
-  getUserFromToken: function(sessionToken) {
-    return jwt.decode(sessionToken).data;
+  getUserIdFromToken: function(sessionToken) {
+    const data = jwt.decode(sessionToken).data;
+    console.log(data);
+    return data;
   }
 };

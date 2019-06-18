@@ -15,10 +15,9 @@ $("#createAccount").on("click", () => {
       password
     },
     res => {
-      console.log(res);
       if (res.success) {
-        //TODO - save token in local session.
-        window.location.href = "/user/" + name;
+        localStorage.setItem("sessionToken", res.token);
+        window.location.href = "/user/" + res.id;
       } else {
         M.toast({ html: res.message });
       }
@@ -47,8 +46,6 @@ $("#logInButton").on("click", () => {
         localStorage.setItem("sessionToken", res.token);
         window.location.href = "/user/" + res.id;
       } else {
-        console.log(res);
-        // console.log(res.message);
         M.toast({ html: res.message });
       }
     }
@@ -61,7 +58,6 @@ $("#createProject").on("click", event => {
   $.post(
     "/api/project",
     {
-      //TODO - pull in the project entry and everything else needed.
       title: $("#projectName")
         .val()
         .trim(),
@@ -69,7 +65,7 @@ $("#createProject").on("click", event => {
     },
     response => {
       if (response.success) {
-        window.location.href = "/project/" + response.id;
+        window.location.href = "/project/" + response.projectId;
       } else {
         M.toast({ html: res.message });
       }
@@ -77,14 +73,16 @@ $("#createProject").on("click", event => {
   );
 });
 
-$(".loadProject").on("click", () => {
-  $.post("/api/project/" + $(this).data("projectId"), res => {
-    if (res.success) {
-      window.location.href = "/project/" + res.id;
-    } else {
-      M.toast({ html: res.message });
-    }
-  });
+$(".loadProject").on("click", event => {
+  //TODO - validate session token first.
+  window.location.href = "/project/" + $(event.target).attr("data-projectId");
+  // $.get("/project/" + $(event.target).attr("data-projectId"), res => {
+  //   if (res.success) {
+  //     window.location.href = "/project/" + res.projectId;
+  //   } else {
+  //     M.toast({ html: res.message });
+  //   }
+  // });
 });
 
 //Respond to a user clicking away a Shortcut
@@ -111,4 +109,8 @@ $(".xButton").on("click", () => {
       }
     });
   });
+});
+
+$(document).ready(() => {
+  $(".collapsible").collapsible();
 });

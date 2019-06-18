@@ -21,9 +21,9 @@ module.exports = function(app) {
   });
 
   // Render active project page
-  app.get("/project/:id", function(req, res) {
+  app.get("/project/:projectId", function(req, res) {
     db.Project.findOne({
-      where: { id: req.params.id }
+      where: { id: req.params.projectId }
     }).then(function(dbPrj) {
       console.log(dbPrj.showMask);
       //Use api route to get json of all our shortcuts.
@@ -37,8 +37,8 @@ module.exports = function(app) {
         }
         res.render("projectDisplay", {
           //TODO - get the user name rather than the id.
-          userName: req.params.id,
-          projectName: req.params.id,
+          userName: "bob",
+          projectName: req.params.projectId,
           projects: shortcutsToShow
         });
       });
